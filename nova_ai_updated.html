@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NOVA AI — Super Agent</title>
+<style>
+:root{color-scheme:dark;--bg:#090e1c;--panel:#141e34;--line:#2a3958;--muted:#aab6d0;--accent:#8c7cff;--cyan:#36c6d4}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#182445 0,#090e1c 55%);color:#f5f7ff;font:15px system-ui,-apple-system,Segoe UI,sans-serif;padding:18px;max-width:1050px;margin:auto}
+header{padding:12px 0 22px}.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.5px}.logo{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--cyan));color:#071020;font-size:22px;font-weight:900}
+h1{font-size:clamp(29px,6vw,46px);line-height:1.08;margin:24px 0 10px}h2{font-size:21px;margin:28px 0 12px}p{color:var(--muted);line-height:1.55}.tag{display:inline-block;color:#d9d4ff;background:#29234d;border:1px solid #51458b;padding:5px 9px;border-radius:99px;font-size:12px}
+.panel,.card{background:linear-gradient(180deg,#17233d,#111a2d);border:1px solid var(--line);border-radius:17px;padding:16px}.panel{margin-top:12px}
+textarea,input,select{width:100%;background:#0a1224;color:#fff;border:1px solid #354665;border-radius:11px;padding:12px;font:inherit;margin-top:8px}
+textarea{min-height:105px;resize:vertical}label{display:block;color:#dce4fa;font-weight:650;margin-top:12px}
+button{background:linear-gradient(100deg,var(--accent),#655be8);color:white;border:0;border-radius:11px;padding:12px 16px;font-weight:750;margin:10px 8px 0 0;font:inherit;cursor:pointer}
+button.secondary{background:#34415e}button:active{transform:scale(.99)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.card{min-height:125px}.card b{display:block;margin:8px 0 5px}.card small{color:var(--muted);line-height:1.45;display:block}
+#result{display:none;white-space:pre-wrap;margin-top:13px;padding:13px;background:#091225;border:1px solid #30415f;border-radius:12px;color:#e3eaff;line-height:1.5}
+.note{font-size:13px;color:#aebbd6;background:#101a2d;border-left:3px solid var(--cyan);padding:10px 12px;border-radius:8px;margin-top:12px}
+footer{color:#8492af;font-size:12px;margin:28px 0 10px}
+@media(min-width:700px){body{padding:28px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.panel{padding:20px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><span class="logo">N</span><span>NOVA AI · SUPER AGENT</span></div>
+ <h1>एक AI प्लेटफॉर्म।<br>कई तरह के काम।</h1>
+ <p>लिखो कि क्या चाहिए। NOVA AI का लक्ष्य है कि वह तुम्हारी जरूरत समझे, जरूरी सवाल पूछे और काम के हिसाब से सही टूल चुने।</p>
+ <span class="tag">Creator • Business • Learning • Productivity</span>
+</header>
+
+<section class="panel">
+ <b>🤖 NOVA AI Agent</b>
+ <p>अपना काम साफ-साफ बताओ। फोटो या वीडियो के लिए अपनी पसंद, रेफरेंस और जरूरी डिटेल भी लिखो।</p>
+ <label for="task">तुम्हें क्या बनवाना या करवाना है?</label>
+ <textarea id="task" placeholder="उदाहरण: मेरी अपलोड की हुई फोटो में मेरा चेहरा और बाल बिल्कुल वैसे ही रखना। मुझे नेवी ब्लू सूट पहनाकर realistic 3D studio portrait बनाओ। कोई दूसरा चेहरा मत बनाना।"></textarea>
+ <label for="quality">आउटपुट स्टाइल / क्वालिटी</label>
+ <select id="quality">
+  <option>काम के अनुसार सही स्टाइल चुनो</option><option>Photorealistic / Realistic</option><option>3D Render</option><option>HDR Photo</option><option>Cartoon</option><option>Anime</option><option>Illustration</option><option>Documentary / Real-world visuals</option><option>मैं अपनी रेफरेंस के जैसा चाहता/चाहती हूँ</option>
+ </select>
+ <label for="details">जरूरी निर्देश (वैकल्पिक)</label>
+ <textarea id="details" placeholder="क्या बिल्कुल वैसा रखना है? क्या बदलना है? वीडियो की अवधि, भाषा, प्लेटफॉर्म, कैमरा, आवाज, संगीत आदि।"></textarea>
+ <button onclick="runAgent()">काम की रिक्वेस्ट तैयार करो</button><button class="secondary" onclick="clearForm()">साफ करो</button>
+ <div id="result"></div>
+ <div class="note">यह अभी शुरुआती वेबसाइट डेमो है। बटन तुम्हारी रिक्वेस्ट को व्यवस्थित करके दिखाता है; असली AI generation, live market data, video rendering और Google account connection अभी जोड़े नहीं गए हैं।</div>
+</section>
+
+<h2>मुख्य AI सेक्शन</h2>
+<section class="grid">
+ <div class="card">🤖<b>1. AI Super Agent</b><small>काम समझना, जरूरत पड़ने पर सवाल पूछना, चरणों में काम करना और सही टूल चुनना।</small></div>
+ <div class="card">🎬<b>2. AI Video Studio</b><small>डॉक्यूमेंट्री, Shorts, Reels, explainer, ads और long-form वीडियो; स्क्रिप्ट, storyboard, voiceover, subtitles और editing plan।</small></div>
+ <div class="card">🖼️<b>3. AI Image & Photo Studio</b><small>फोटो एडिट, face/identity preservation निर्देश, realistic, 3D, HDR, cartoon, anime, poster, thumbnail और design।</small></div>
+ <div class="card">📊<b>4. Stock Market & Trading Analysis</b><small>शेयर/इंडेक्स रिसर्च, trend, technical indicators, risk/reward, scenarios और live-data आधारित analysis जब data source जुड़ा हो।</small></div>
+ <div class="card">🎵<b>5. Music Generation</b><small>मूड, genre, duration और उपयोग के हिसाब से original music / background score की generation।</small></div>
+ <div class="card">🧠<b>6. Quiz & Flashcards</b><small>किसी topic, notes या lesson से quiz, flashcards, practice और revision।</small></div>
+ <div class="card">📚<b>7. Storybook Creator</b><small>कहानी, पात्र, अध्याय, बच्चों की storybook और scene-by-scene illustration plan।</small></div>
+ <div class="card">🔗<b>8. Google Apps Integration</b><small>अनुमति मिलने पर Google Drive, Docs, Sheets, Calendar और Gmail जैसे supported apps के साथ काम।</small></div>
+ <div class="card">📱<b>9. Social Media Manager</b><small>Posts, captions, hooks, content calendar, scheduling और performance summaries।</small></div>
+ <div class="card">✍️<b>10. Creator Tools</b><small>Scripts, titles, descriptions, hashtags, thumbnail ideas और content repurposing।</small></div>
+ <div class="card">📈<b>11. SEO & Business</b><small>Keyword research, SEO/AEO, competitor research, product copy और business planning।</small></div>
+ <div class="card">💻<b>12. Coding & Learning</b><small>Code help, website/app planning, explanations, exercises और learning paths।</small></div>
+ <div class="card">📄<b>13. Documents & Productivity</b><small>Documents, reports, summaries, spreadsheets, presentations और task planning।</small></div>
+ <div class="card">🎧<b>14. Customer Support Agent</b><small>Support replies, FAQ drafts, ticket summaries और customer workflows।</small></div>
+ <div class="card">🛒<b>15. E-commerce Agent</b><small>Product listings, store descriptions, catalog content और customer questions।</small></div>
+</section>
+
+<h2>काम सही करने के लिए NOVA के नियम</h2>
+<section class="panel">
+ <p><b>1. पहले समझो:</b> अगर यूजर की बात में जरूरी जानकारी कम है, तो अनुमान लगाने के बजाय छोटा और साफ सवाल पूछो।</p>
+ <p><b>2. रेफरेंस का सम्मान:</b> फोटो/वीडियो एडिट में यूजर ने जिन चीजों को वैसा ही रखने को कहा है, उन्हें न बदलो। चेहरे, बाल, कपड़े, pose, background और framing के निर्देश अलग-अलग समझो।</p>
+ <p><b>3. वीडियो में तथ्य:</b> डॉक्यूमेंट्री या educational video में तथ्य जाँचो, कल्पना को तथ्य की तरह मत दिखाओ, और जहाँ जरूरी हो स्रोत/तारीख बताओ।</p>
+ <p><b>4. ट्रेडिंग में ईमानदारी:</b> ताजा market data और समय दिखाओ। Analysis को guaranteed profit मत बताओ। Risk, stop-loss विचार, uncertainty और संभावित नुकसान स्पष्ट करो।</p>
+ <p><b>5. काम पूरा होने की सच्चाई:</b> जो सुविधा कनेक्ट नहीं है, उसके पूरा होने का दावा मत करो। Paid API, subscription, cloud rendering या account permissions की जरूरत पहले बताओ।</p>
+</section>
+
+<footer>
+NOVA AI prototype • यह केवल front-end demo है। वास्तविक AI models/APIs, secure backend, user accounts, database, live market-data provider, image/video/music generation services और Google OAuth integrations अलग से बनानी और सुरक्षित तरीके से जोड़नी होंगी। Trading analysis लाभ की गारंटी नहीं देता।
+</footer>
+<script>
+function runAgent(){
+ const task=document.getElementById('task').value.trim();
+ const style=document.getElementById('quality').value;
+ const details=document.getElementById('details').value.trim();
+ const out=document.getElementById('result');
+ out.style.display='block';
+ if(!task){out.textContent='पहले बताओ कि तुम्हें क्या काम करवाना है।';return;}
+ out.textContent='तुम्हारी NOVA AI रिक्वेस्ट तैयार है:\\n\\nकाम: '+task+'\\nस्टाइल: '+style+'\\nअतिरिक्त निर्देश: '+(details||'कोई अतिरिक्त निर्देश नहीं')+'\\n\\nअगला वास्तविक कदम: चुने हुए AI टूल/API से इस रिक्वेस्ट को जोड़ना। अभी यह डेमो केवल रिक्वेस्ट व्यवस्थित करता है, असली generation नहीं करता।';
+}
+function clearForm(){document.getElementById('task').value='';document.getElementById('details').value='';document.getElementById('quality').selectedIndex=0;document.getElementById('result').style.display='none';}
+</script>
+</body></html>
